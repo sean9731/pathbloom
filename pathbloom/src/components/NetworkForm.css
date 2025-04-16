@@ -1,0 +1,11 @@
+.left-container {
+    display: flex;
+    flex-direction: column; /* Arrange children vertically */
+    gap: 15px; /* Add some space between the elements */
+    background-color: #f9f9f9; /* Temporary for testing */
+  }
+  
+  .building-dialog {
+    margin-top: 20px; /* Add some spacing above the dialog */
+  }
+  

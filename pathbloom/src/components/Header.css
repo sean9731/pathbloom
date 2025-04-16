@@ -1,0 +1,18 @@
+header {
+    background-color: #ADD8E6; /* Light Blue */
+    padding: 20px;
+    text-align: center;
+    color: #fff; /* White text */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    border-radius: 5px;
+
+  }
+  
+  .header-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+    letter-spacing: 1px;
+    color: #2e728b; /* Aquamarine */
+  }

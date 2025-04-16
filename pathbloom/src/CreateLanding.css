@@ -1,0 +1,40 @@
+/* src/App.css */
+
+.App {
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-top: 20px;
+  }
+  
+  /* Flex container for Network Form and Diagram */
+  .content-container {
+    display: flex;
+    justify-content: space-between; /* This ensures the form and diagram are spaced out */
+    align-items: flex-start; /* Align items to the top */
+    height: 80vh; /* Set height of the container */
+    margin-top: 20px;
+    padding: 0 20px;
+  }
+  
+  /* Network Form Container */
+  .network-form-container {
+    width: 30%; /* Set width for the form (30% of the screen width) */
+    padding: 10px;
+    background-color: #a4b5f1;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 100%; /* Ensure it takes up full height of the parent */
+  }
+  
+  /* Diagram Container */
+  .diagram-container {
+    width: 65%; /* Set width for the diagram (65% of the screen width) */
+    height: 100%;
+    position: relative;
+    border: 1px solid #ddd;
+    background: #f0f8ff;
+  }
+  
