@@ -1,8 +1,8 @@
 header {
-    background-color: #ADD8E6; /* Light Blue */
+    background-color: #e7e7e7; 
     padding: 20px;
     text-align: center;
-    color: #fff; /* White text */
+    color: #fff; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
     border-radius: 5px;
@@ -14,5 +14,4 @@ header {
     font-weight: bold;
     margin: 0;
     letter-spacing: 1px;
-    color: #2e728b; /* Aquamarine */
   }

@@ -1,8 +1,9 @@
-// src/components/Diagram.js
+import './Diagram.css';
 import React, { useRef, useEffect, useState } from 'react';
 import NodeComponent from './NodeComponent';
 import TrashCan from './TrashCan';
 import Edge from './Edge';
+import ExportButtons from './ExportButtons';
 
 const Diagram = ({
   elements,
@@ -13,7 +14,7 @@ const Diagram = ({
   setSelectedNodeId,
   clearSelection,
   isPingActive,
-  togglePing, // ✅ Make sure this is passed from App
+  togglePing,  
 }) => {
   const containerRef = useRef(null);
 
@@ -36,33 +37,53 @@ const Diagram = ({
     if (!isPingActive) return;
 
     const interval = setInterval(() => {
-      setActivePingEdgeIndex((prev) => (prev + 1) % elements.edges.length);
-    }, 1500); // Cycle pings every 1.5s
+      // Reset to 0 if the edges array is empty
+      setActivePingEdgeIndex((prev) => (prev + 1) % elements.edges.length || 0);
+    }, 1500); 
 
     return () => clearInterval(interval);
   }, [isPingActive, elements.edges.length]);
 
+  // Reset ping when nodes or edges are deleted
+  useEffect(() => {
+    if (elements.edges.length === 0) {
+      setActivePingEdgeIndex(0);
+    }
+  }, [elements.edges]);
+
+
   return (
     <div
+      id='contentdiv'
       ref={containerRef}
       onDragOver={(e) => e.preventDefault()}
       onClick={handleBlankClick}
       style={{
-        height: '600px',
+
         width: '100%',
         position: 'relative',
-        border: '1px solid #ddd',
-        background: '#f0f8ff',
-        overflow: 'hidden',
+        overflow: 'visible',
       }}
     >
-      {/* Legend and toggle */}
+      <div
+          style={{
+          position: 'absolute',
+          top: '10px',
+          left: '10px',
+          fontSize: '35px',
+          zIndex: 10,
+          opacity: '20%',
+        }}>
+
+        Data Matrix, Inc.
+
+      </div>
       <div
         style={{
           position: 'absolute',
           top: '10px',
-          right: '10px',
-          backgroundColor: 'white',
+          right: '20px',
+          backgroundColor: '#343739',
           padding: '8px 12px',
           borderRadius: '8px',
           boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
@@ -75,24 +96,25 @@ const Diagram = ({
         Dotted = Wireless Connection
         <br />
         <br />
+        {elements.edges.length > 0 && (
         <button
           onClick={togglePing}
           style={{
             padding: '4px 10px',
             fontSize: '12px',
             borderRadius: '6px',
-            border: '1px solid #aaa',
             cursor: 'pointer',
-            background: '#f8f8f8',
+            background: '#757574',
             marginTop: '8px',
           }}
         >
           {isPingActive ? 'Stop Pings' : 'Start Pings'}
         </button>
+        )}
       </div>
 
       {/* Edges */}
-      <svg
+      <svg className='svg-content'
         width="100%"
         height="100%"
         style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}
@@ -132,9 +154,10 @@ const Diagram = ({
           isSelected={selectedNodeId === node.id}
         />
       ))}
-
       {/* Trash can */}
       <TrashCan onDrop={deleteNode} />
+      <ExportButtons containerRef={containerRef} />
+
     </div>
   );
 };

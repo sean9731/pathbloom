@@ -7,6 +7,7 @@ const Edge = ({ source, target, isPingActive }) => {
 
   const handleLineClick = () => {
     setIsSolid((prev) => !prev);
+
   };
   // Animate ping based on isPingActive
   useEffect(() => {
@@ -15,7 +16,7 @@ const Edge = ({ source, target, isPingActive }) => {
       if (!intervalRef.current) {
         intervalRef.current = setInterval(() => {
           setPingProgress((prev) => (prev >= 1 ? 0 : prev + 0.01));
-        }, 16); // ~60fps
+        }, 16); 
       }
     } else {
       clearInterval(intervalRef.current);
@@ -31,40 +32,42 @@ const Edge = ({ source, target, isPingActive }) => {
 
   if (!source || !target) return null;
 
-  const x = source.x + (target.x - source.x) * pingProgress;
+  const x = source.x+ (target.x - source.x) * pingProgress;
   const y = source.y + (target.y - source.y) * pingProgress;
 
   return (
     <>
       {/* Click hitbox */}
       <line
-        x1={source.x}
+        x1={source.x - 10}
         y1={source.y}
-        x2={target.x}
+        x2={target.x - 10}
         y2={target.y}
         stroke="transparent"
         strokeWidth="20"
         onClick={handleLineClick}
         style={{ cursor: 'pointer' }}
-        opacity={0.2}
+        opacity={0.1}
       />
 
       {/* Actual edge line */}
       <line
-        x1={source.x}
+      //- 10 is used to offset for centering of line
+        x1={source.x - 10}
         y1={source.y}
-        x2={target.x}
+        x2={target.x - 10}
         y2={target.y}
-        stroke="black"
+        stroke="white"
         strokeWidth="2"
         strokeDasharray={isSolid ? '0' : '5,5'}
         onClick={handleLineClick}
         style={{ cursor: 'pointer' }}
-        opacity={.4}
+        opacity={.3}
       />
 
-      {/* Ping animation dot */}
-      {<circle cx={x} cy={y} r={5} fill="green" />}
+      {/*- 10 is used to offset for centering of line */}
+
+      {isPingActive && <circle cx={x - 10} cy={y} r={5} fill="#29FF86" />}
     </>
   );
 };

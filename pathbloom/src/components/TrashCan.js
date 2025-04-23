@@ -26,6 +26,7 @@ const TrashCan = ({ onDrop }) => {
 
   return (
     <div
+      className="trash-can"
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -33,9 +34,9 @@ const TrashCan = ({ onDrop }) => {
         position: 'absolute',
         bottom: '20px',
         right: '20px',
-        width: '80px',
-        height: '80px',
-        backgroundColor: isHovering ? '#ff3333' : '#ff6666',
+        width: '60px',
+        height: '60px',
+        backgroundColor: isHovering ? '#252424' : '#3e3c3c',
         borderRadius: '16px',
         display: 'flex',
         justifyContent: 'center',
@@ -44,7 +45,7 @@ const TrashCan = ({ onDrop }) => {
         fontWeight: 'bold',
         fontSize: '32px',
         boxShadow: isHovering
-          ? '0 0 20px 5px rgba(255, 0, 0, 0.5)'
+          ? '0 0 20px 5px rgba(71, 71, 71, 0.5)'
           : '0 0 10px rgba(0,0,0,0.2)',
         transform: isHovering ? 'scale(1.1)' : 'scale(1)',
         transition: 'all 0.2s ease-in-out',

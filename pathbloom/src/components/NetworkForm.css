@@ -1,11 +1,28 @@
+
 .left-container {
-    display: flex;
-    flex-direction: column; /* Arrange children vertically */
-    gap: 15px; /* Add some space between the elements */
-    background-color: #f9f9f9; /* Temporary for testing */
-  }
-  
-  .building-dialog {
-    margin-top: 20px; /* Add some spacing above the dialog */
-  }
-  
+  display: flex;
+  flex-direction: column; 
+  gap: 15px; 
+  background-color: #2d2c2c; 
+  padding: 20px; 
+  border-radius: 8px;
+  max-width: 500px; 
+  overflow: hidden; 
+  position: relative;
+}
+
+
+.building-dialog {
+  margin-top: 20px; 
+  max-width: 100%; 
+  overflow: hidden;
+  border-radius: 8px; 
+}
+
+
+.building-dialog .dialog-content {
+  padding: 15px;
+  background-color: #fff;
+  max-height: 300px; 
+  overflow-y: auto; 
+}

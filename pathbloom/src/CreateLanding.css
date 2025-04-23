@@ -1,40 +1,45 @@
 /* src/App.css */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 .App {
     text-align: center;
   }
-  
-  h1 {
-    font-size: 2rem;
-    margin-top: 20px;
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.2;
   }
   
-  /* Flex container for Network Form and Diagram */
+  h1, h2 {
+    font-weight: 700;
+    color: #eeeeee;
+  }
+
   .content-container {
     display: flex;
-    justify-content: space-between; /* This ensures the form and diagram are spaced out */
-    align-items: flex-start; /* Align items to the top */
-    height: 80vh; /* Set height of the container */
+    justify-content: space-between; 
+    align-items: flex-start;
+    height: 80vh;
     margin-top: 20px;
     padding: 0 20px;
   }
   
-  /* Network Form Container */
+
   .network-form-container {
-    width: 30%; /* Set width for the form (30% of the screen width) */
+    width: 30%; 
     padding: 10px;
-    background-color: #a4b5f1;
+    background-color: #58595b;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    height: 100%; /* Ensure it takes up full height of the parent */
+    height: 100%; 
+    background-image: linear-gradient(to bottom,#747474 0%, #747474 100%), linear-gradient(to bottom,#4d4d4d 0%,#4d4d4d 100%);
+    background-clip: content-box, padding-box;
   }
-  
-  /* Diagram Container */
+
   .diagram-container {
-    width: 65%; /* Set width for the diagram (65% of the screen width) */
+    width: 65%; 
     height: 100%;
     position: relative;
-    border: 1px solid #ddd;
-    background: #f0f8ff;
+    background: #4d4d4d;
   }
   

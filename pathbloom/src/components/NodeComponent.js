@@ -1,10 +1,18 @@
-// src/NodeComponent.js
 import React, { useState } from 'react';
-import TrashCan from './TrashCan'
 
-const NodeComponent = ({ id, label, position, onDragEnd,  onClick, containerWidth, containerHeight, src, isSelected }) => {
+const NodeComponent = ({
+  id,
+  label,
+  type,
+  position,
+  onDragEnd,
+  onClick,
+  containerWidth,
+  containerHeight,
+  src,
+  isSelected,
+}) => {
   const [nodePosition, setNodePosition] = useState(position);
-
 
   const handleDragStart = (e) => {
     e.dataTransfer.setData('nodeId', id); // Attach the node ID
@@ -13,33 +21,49 @@ const NodeComponent = ({ id, label, position, onDragEnd,  onClick, containerWidt
   const handleDragEnd = (e) => {
     e.preventDefault();
 
-    const containerRect = e.target.closest('.diagram-container').getBoundingClientRect();
+    const container = e.target.closest('.diagram-container');
+    const containerRect = container.getBoundingClientRect();
+    const nodeRect = e.target.getBoundingClientRect();
 
-    let newX = e.clientX - containerRect.left - 50;
-    let newY = e.clientY - containerRect.top - 25;
+    const nodeWidth = nodeRect.width;
+    const nodeHeight = nodeRect.height;
 
-    if (newX < 0) newX = 0;
+    let newX = e.clientX - containerRect.left - nodeWidth / 2;
+    let newY = e.clientY - containerRect.top - nodeHeight / 2;
 
-    if (newY < 0) newY = 0;
-
+    // Prevent going out of bounds
+    newX = Math.max(0, Math.min(newX, container.offsetWidth - nodeWidth));
+    newY = Math.max(0, Math.min(newY, container.offsetHeight - nodeHeight));
 
     setNodePosition({ x: newX, y: newY });
     onDragEnd(id, { x: newX, y: newY });
   };
 
+  const truncatedLabel = label.length > 20 ? `${label.slice(0, 20)}...` : label;
+
   return (
     <div
+      className="test"
       id={id}
       style={{
         position: 'absolute',
         top: `${nodePosition.y}px`,
         left: `${nodePosition.x}px`,
-        width: '100px',
+        width: '80px',         
         height: '50px',
         cursor: 'move',
-        border: isSelected ? '3px solid blue' : 'none',
-        borderRadius: '8px',
-        boxShadow: isSelected ? '0 0 10px rgba(0, 0, 255, 0.5)' : 'none',
+        borderRadius: '50px',
+        border: isSelected ? '2px solid rgb(146, 155, 157)' : 'none',
+        boxShadow: isSelected
+          ? '0 0 12px #cccccc, 0 0 6px #cccccc'
+          : '0 2px 8px rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center', 
+        textAlign: 'center',
+        transition: 'all 0.1s ease-in-out',
+        background: isSelected ? 'rgba(255,255,255,0.05)' : 'transparent',
+        backdropFilter: 'blur(1px)',
 
       }}
       draggable
@@ -47,18 +71,19 @@ const NodeComponent = ({ id, label, position, onDragEnd,  onClick, containerWidt
       onDragEnd={handleDragEnd}
       onClick={onClick}
     >
-
       <img
         src={src}
         alt={label}
-        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-        draggable={false} 
-      
+        style={{
+          width: 'auto',
+          height: 'auto',
+          maxHeight: '100%',
+          maxWidth: '100%',
+          objectFit: 'contain',
+        }}
+        draggable={false}
       />
-           
-            {label}
-
-
+      <div style={{ marginTop: '5px' }}>{truncatedLabel}</div>
     </div>
   );
 };

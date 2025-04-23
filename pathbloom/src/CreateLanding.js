@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState, useEffect } from 'react'; // ✅ Added useEffect
+import React, { useState, useEffect } from 'react';
 import Diagram from './components/Diagram';
 import NetworkForm from './components/NetworkForm';
 import './CreateLanding.css';
@@ -37,10 +37,27 @@ const CreateLanding = () => {
   }, []);
 
   const addEdge = (sourceId, targetId) => {
-    setElements((prev) => ({
-      ...prev,
-      edges: [...prev.edges, { sourceId, targetId }],
-    }));
+    setElements((prev) => {
+      const edgeExists = prev.edges.some(
+        (edge) =>
+          (edge.sourceId === sourceId && edge.targetId === targetId) ||
+          (edge.sourceId === targetId && edge.targetId === sourceId)
+      );
+  
+      if (edgeExists) {
+        console.log('Edge already exists between these nodes.');
+        return prev; // don’t add duplicate
+      }
+  
+      const newEdge = { sourceId, targetId };
+      const updatedEdges = [...prev.edges, newEdge];
+      console.log('Adding new edge:', newEdge);
+  
+      return {
+        ...prev,
+        edges: updatedEdges,
+      };
+    });
   };
 
   const startEdge = (nodeId) => {
@@ -49,10 +66,13 @@ const CreateLanding = () => {
       setSelectedNodeId(nodeId); // Select node on first click
     } else {
       if (edgeStart !== nodeId) {
-        addEdge(edgeStart, nodeId); // Connect nodes
+        addEdge(edgeStart, nodeId);
+         // Connect nodes
       }
       setEdgeStart(null);
-      setSelectedNodeId(null); // Clear selection after edge creation
+      setSelectedNodeId(null);
+      console.log(elements.edges)
+       // Clear selection after edge creation
     }
   };
 
@@ -129,9 +149,12 @@ const CreateLanding = () => {
             setSelectedNodeId={setSelectedNodeId}
             clearSelection={clearSelection}
             isPingActive={isPingActive}
-            togglePing={togglePing} 
+            togglePing={togglePing}
           />
+
+
         </div>
+
       </div>
     </div>
   );
