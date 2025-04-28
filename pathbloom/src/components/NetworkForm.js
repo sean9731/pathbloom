@@ -1,11 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BuildingDialog from './BuildingDialog';
+import { createPortal } from 'react-dom';
 
 const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
   const [deviceType, setDeviceType] = useState('');
   const [nodeName, setNodeName] = useState('');
+  const [customNodeName, setCustomNodeName] = useState('');
+  const [showCustomOverlay, setShowCustomOverlay] = useState(false);
+  const [showCustomErrorOverlay, setShowCustomErrorOverlay] =useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [file, setFile] = useState(null);
 
-  // Corrected paths to icons
+  // Handle the image file upload and preview
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.type === 'image/png') {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result);
+        setFile(selectedFile);
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      alert('Please upload a valid PNG file.');
+    }
+  };
+
+  useEffect(() => {
+    if (deviceType === 'Custom') {
+      handleCustom();
+    }
+  }, [deviceType]);
+
   const iconMap = {
     building: './icons/building.png',
     router: './icons/router.png',
@@ -14,24 +40,52 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
     accessPoint: './icons/access-point.png',
     workstation: './icons/workstation.png',
     server: './icons/server.png',
+    modem: './icons/modem.png',
+    cloud: './icons/cloud.png',
+    folder: './icons/folder.png',
   };
 
-  // Handle adding a new node
-  const handleAddNode = () => {
-    if (!nodeName || !deviceType) return; // Ensure both name and type are selected
+  const handleCustom = () => {
+    setShowCustomOverlay(true);
+  };
 
-    const newNode = {
-      id: `node-${Date.now()}`,
-      data: {
-        deviceType: ` ${deviceType}`,
-        label: ` ${nodeName}`,
-        src: iconMap[deviceType.toLowerCase()], // Use lowercase to match keys in iconMap
-      },
-      position: { x: Math.random() * 500, y: Math.random() * 500 },
-    };
-    addElement(newNode);
-    setNodeName('');
-    setDeviceType(''); // Reset device type after adding
+  const handleAddNode = () => {
+    
+    if (deviceType === 'Custom' && customNodeName && previewUrl) {
+      const newNode = {
+        id: `node-${Date.now()}`,
+        data: {
+          deviceType: ` ${deviceType}`,
+          label: ` ${customNodeName}`,
+          src: previewUrl, 
+        },
+        position: { x: Math.random() * 500, y: Math.random() * 500 },
+      };
+      addElement(newNode);
+      setShowCustomOverlay(false);
+      setCustomNodeName('');
+      setPreviewUrl(null); 
+      setDeviceType(''); 
+      setShowCustomErrorOverlay(false);
+    } else if (nodeName && deviceType) {
+      // Handle default node
+      const newNode = {
+        id: `node-${Date.now()}`,
+        data: {
+          deviceType: ` ${deviceType}`,
+          label: ` ${nodeName}`,
+          src: iconMap[deviceType.toLowerCase()], 
+        },
+        position: { x: Math.random() * 500, y: Math.random() * 500 },
+      };
+      addElement(newNode);
+      setNodeName(''); 
+      setDeviceType(''); 
+      
+      //Handle incomplete custom input
+    } else if(!customNodeName || !previewUrl){
+      setShowCustomErrorOverlay(true);
+    }
   };
 
   return (
@@ -39,7 +93,7 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
       <div className='left-container'>
         <h3 style={{ fontWeight: '600', color: 'rgb(233 233 233)' }}>Create Network Elements</h3>
 
-        {/* Dropdown to select device type */}
+
         <div style={{ marginBottom: '15px' }}>
           <label style={{ fontWeight: '500', marginBottom: '5px', display: 'block' }}>Device Type:</label>
           <select
@@ -65,10 +119,13 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
             <option value="Workstation">Workstation</option>
             <option value="Server">Server</option>
             <option value="AccessPoint">Access Point</option>
+            <option value="Modem">Modem</option>
+            <option value="Folder">Shared Folder</option>
+            <option value="Cloud">Cloud</option>
+            <option value="Custom">Custom...</option>
           </select>
         </div>
 
-        {/* Input for the name of the node */}
         <div style={{ marginBottom: '20px' }}>
           <label style={{ fontWeight: '500', marginBottom: '5px', display: 'block' }}>Device Name:</label>
           <input
@@ -104,21 +161,50 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
               cursor: 'pointer',
               transition: 'background-color 0.3s ease',
             }}
-            onMouseOver={(e) => (e.target.style.backgroundColor = '#45a049')}
-            onMouseOut={(e) => (e.target.style.backgroundColor = '#4CAF50')}
           >
             Add Device
           </button>
         </div>
 
-        {/* Building Dialog */}
+
         <div className='building-dialog'>
-          <BuildingDialog
-            getElement={getElement}
-            deleteConnections={deleteConnections}
-          />
+          <BuildingDialog getElement={getElement} deleteConnections={deleteConnections} />
         </div>
       </div>
+
+      {/* Custom Device Overlay */}
+      {showCustomOverlay &&
+        createPortal(
+          <div className="overlay">
+            <div className="middle-box">
+              <h3>Enter Custom Device Type</h3>
+              <input
+                type="text"
+                value={customNodeName}
+                onChange={(e) => setCustomNodeName(e.target.value)}
+                placeholder="Custom device name"
+              />
+              <br />
+              <br />
+              <div style={{ textAlign: 'center' }}>
+                <h3>Upload a PNG Icon</h3>
+                <input type="file" accept="image/png" onChange={handleFileChange} />
+                {previewUrl && (
+                  <div style={{ marginTop: '20px' }}>
+                    <p>Preview:</p>
+                    <img src={previewUrl} alt="Preview" style={{ width: '100px', height: 'auto' }} />
+                  </div>
+                )}
+              </div>
+              <button onClick={() => setShowCustomOverlay(false)}>Close</button>
+              <button onClick={handleAddNode}>Save</button>
+              {showCustomErrorOverlay &&
+                <p>Please add a valid PNG and Name.</p>
+              }
+            </div>
+          </div>,
+          document.body 
+        )}
     </div>
   );
 };

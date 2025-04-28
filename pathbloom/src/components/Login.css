@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f8ff; /* Light Blue Background */
+    color: #ddd;
     height: 100vh;
     margin: 0;
   }
@@ -16,7 +16,7 @@ body {
   /* Login box styling */
   .login-box {
     background-color: #ffffff;
-    padding: 50px;
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
@@ -57,7 +57,7 @@ body {
     border-radius: 5px;
     font-size: 16px;
     margin-top: 5px;
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
+    box-sizing: border-box; 
   }
   
   /* Focus state for input */

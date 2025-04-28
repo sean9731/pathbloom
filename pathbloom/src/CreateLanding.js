@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Diagram from './components/Diagram';
 import NetworkForm from './components/NetworkForm';
 import './CreateLanding.css';
+import { Link } from 'react-router-dom';
 
 const CreateLanding = () => {
   const [elements, setElements] = useState({
@@ -128,8 +129,13 @@ const CreateLanding = () => {
 
   return (
     <div className="App">
+      <div className='headercontainer'>
       <h1>PathBloom Network Diagram</h1>
-
+      <div className="header-buttons">
+        <Link to="/login" className="header-button">Login</Link>
+        <Link to="/register" className="header-button">Register</Link>
+      </div>
+      </div>
       <div className="content-container">
         <div className="network-form-container">
           <NetworkForm 

@@ -10,6 +10,12 @@ const BuildingDialog = ({ getElement, deleteConnections }) => {
     }
   };
 
+  const truncatedLabel =
+  element?.data?.label?.length > 70
+    ? `${element.data.label.slice(0, 70)}...`
+    : element?.data?.label;
+
+
   return (
     <div
       className="dialog"
@@ -19,22 +25,28 @@ const BuildingDialog = ({ getElement, deleteConnections }) => {
         width: '90%',
         margin: '0 auto',
         textAlign: 'center',
+        maxWidth: '300px'
       }}
     >
       {element ? (
         <div>
           <h2>Selected Node Info</h2>
-          <p><strong> {element.data.deviceType} {element.data.label}</strong></p>
-          <p><strong>ID:</strong> {element.id}</p>
+          <p
+          style={{ 
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+            maxWidth: '100%',
+            padding: '0 10px',}}
+          ><strong> {element.data.deviceType} {truncatedLabel}</strong></p>
           <p><strong>Position:</strong> x: {Math.floor(element.position.x)}, y: {Math.floor(element.position.y)}</p>
 
           <img
             src={element.data.src}
             alt={element.data.label}
-            style={{ width: '10%', height: 'auto', margin: '5px 0' }}
+            style={{ width: '20%', height: 'auto', margin: '5px 0', overflow: 'hidden'}}
           />
 
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', paddingBottom: '5px' }}>
             <button
               onClick={handleDeleteConnections}
               style={{
@@ -45,6 +57,7 @@ const BuildingDialog = ({ getElement, deleteConnections }) => {
                 color: '#fff',
                 border: 'none',
                 cursor: 'pointer',
+
               }}
             >
               Delete Connections
