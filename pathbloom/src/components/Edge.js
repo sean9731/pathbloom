@@ -61,8 +61,11 @@ const Edge = ({ source, target, isPingActive }) => {
         strokeWidth="2"
         strokeDasharray={isSolid ? '0' : '5,5'}
         onClick={handleLineClick}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer'}}
         opacity={.3}
+
+        
+        
       />
 
       {/*- 10 is used to offset for centering of line */}

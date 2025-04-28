@@ -64,6 +64,7 @@ const NodeComponent = ({
         transition: 'all 0.1s ease-in-out',
         background: isSelected ? 'rgba(255,255,255,0.05)' : 'transparent',
         backdropFilter: 'blur(1px)',
+        zIndex: 3,
 
       }}
       draggable

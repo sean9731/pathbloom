@@ -108,7 +108,7 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
               color: '#555',
               transition: 'border-color 0.3s ease',
             }}
-            onFocus={(e) => (e.target.style.borderColor = '#4CAF50')}
+            onFocus={(e) => (e.target.style.borderColor = '#ccc')}
             onBlur={(e) => (e.target.style.borderColor = '#ccc')}
           >
             <option value="">Select Device Type</option>
@@ -141,7 +141,7 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
             type="text"
             value={nodeName}
             onChange={(e) => setNodeName(e.target.value)}
-            onFocus={(e) => (e.target.style.borderColor = '#4CAF50')}
+            onFocus={(e) => (e.target.style.borderColor = '#ccc')}
             onBlur={(e) => (e.target.style.borderColor = '#ccc')}
           />
         </div>

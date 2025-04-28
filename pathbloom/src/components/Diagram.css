@@ -1,10 +1,11 @@
 
 body {
     background-color: #121212;
-  
+    color: #e0e0e0; 
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
+    user-select: none;
  
   }
   
@@ -172,11 +173,9 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
-    color: #1e1e1e;
-    background-color: #747474;
-  }
+    pointer-events: auto;
 
+  }
   .network-form-container {
     background-color: #58595b; 
   }
@@ -184,3 +183,5 @@ body {
   .exportbuttons {
     position: absolute;
   }
+
+
