@@ -19,11 +19,9 @@ body {
     color: #f0f0f0;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 10px;
   }
   
   button:hover {
-    background-color: #548ac3; 
     color: white;
     transform: scale(1.05);
   }

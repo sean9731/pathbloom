@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import BuildingDialog from './BuildingDialog';
 import { createPortal } from 'react-dom';
 
-const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
+const NetworkForm = ({ addElement, getElement, deleteConnections,setRename,updateNodeNote }) => {
   const [deviceType, setDeviceType] = useState('');
   const [nodeName, setNodeName] = useState('');
   const [customNodeName, setCustomNodeName] = useState('');
   const [showCustomOverlay, setShowCustomOverlay] = useState(false);
-  const [showCustomErrorOverlay, setShowCustomErrorOverlay] =useState(false);
+  const [showCustomErrorOverlay, setShowCustomErrorOverlay] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [file, setFile] = useState(null);
 
@@ -43,6 +43,7 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
     modem: './icons/modem.png',
     cloud: './icons/cloud.png',
     folder: './icons/folder.png',
+    apc: './icons/apc.png'
   };
 
   const handleCustom = () => {
@@ -50,16 +51,16 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
   };
 
   const handleAddNode = () => {
-    
     if (deviceType === 'Custom' && customNodeName && previewUrl) {
       const newNode = {
         id: `node-${Date.now()}`,
         data: {
-          deviceType: ` ${deviceType}`,
-          label: ` ${customNodeName}`,
+          deviceType: `${deviceType}`,
+          label: `${customNodeName}`,
           src: previewUrl, 
         },
         position: { x: Math.random() * 500, y: Math.random() * 500 },
+        note: '', // Initialize with an empty note
       };
       addElement(newNode);
       setShowCustomOverlay(false);
@@ -72,28 +73,26 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
       const newNode = {
         id: `node-${Date.now()}`,
         data: {
-          deviceType: ` ${deviceType}`,
-          label: ` ${nodeName}`,
+          deviceType: `${deviceType}`,
+          label: `${nodeName}`,
           src: iconMap[deviceType.toLowerCase()], 
         },
         position: { x: Math.random() * 500, y: Math.random() * 500 },
+        note: '', // Initialize with an empty note
       };
       addElement(newNode);
       setNodeName(''); 
       setDeviceType(''); 
-      
-      //Handle incomplete custom input
-    } else if(!customNodeName || !previewUrl){
+    } else if (!customNodeName || !previewUrl) {
       setShowCustomErrorOverlay(true);
     }
   };
+
 
   return (
     <div style={{ marginBottom: '20px', fontFamily: 'Arial, sans-serif' }}>
       <div className='left-container'>
         <h3 style={{ fontWeight: '600', color: 'rgb(233 233 233)' }}>Create Network Elements</h3>
-
-
         <div style={{ marginBottom: '15px' }}>
           <label style={{ fontWeight: '500', marginBottom: '5px', display: 'block' }}>Device Type:</label>
           <select
@@ -122,6 +121,7 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
             <option value="Modem">Modem</option>
             <option value="Folder">Shared Folder</option>
             <option value="Cloud">Cloud</option>
+            <option value="Apc">Backup Power Supply</option>
             <option value="Custom">Custom...</option>
           </select>
         </div>
@@ -130,7 +130,7 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
           <label style={{ fontWeight: '500', marginBottom: '5px', display: 'block' }}>Device Name:</label>
           <input
             style={{
-              width: '80%',
+              width: '75%',
               padding: '10px',
               borderRadius: '8px',
               border: '1px solid #ccc',
@@ -152,10 +152,10 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
             onClick={handleAddNode}
             style={{
               padding: '12px 20px',
-              marginBottom: '10px',
+              marginBottom: '8px',
               backgroundColor: '#3e3c3c',
               color: 'white',
-              borderRadius: '5px',
+              borderRadius: '100px',
               border: 'none',
               fontSize: '16px',
               cursor: 'pointer',
@@ -164,11 +164,19 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
           >
             Add Device
           </button>
+            <hr color="#4d4d4d" size="2"
+            style={{marginTop: "0px"}}
+            ></hr>
         </div>
 
-
+        {/* Building Dialog */}
         <div className='building-dialog'>
-          <BuildingDialog getElement={getElement} deleteConnections={deleteConnections} />
+          <BuildingDialog 
+          getElement={getElement}
+          setRename={setRename}
+          deleteConnections={deleteConnections}
+          updateNodeNote={updateNodeNote}
+          />
         </div>
       </div>
 
@@ -186,7 +194,7 @@ const NetworkForm = ({ addElement, getElement, deleteConnections }) => {
               />
               <br />
               <br />
-              <div style={{ textAlign: 'center' }}>
+              <div style={{ textAlign: 'center', paddingbottom: '10px'}}>
                 <h3>Upload a PNG Icon</h3>
                 <input type="file" accept="image/png" onChange={handleFileChange} />
                 {previewUrl && (

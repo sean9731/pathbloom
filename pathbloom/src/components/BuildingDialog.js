@@ -1,8 +1,11 @@
 import React from 'react';
+import NodeNoteBox from './NodeNoteBox';
+import { useState,useEffect } from 'react';
 
-
-const BuildingDialog = ({ getElement, deleteConnections }) => {
+const BuildingDialog = ({ getElement, deleteConnections, updateNodeNote, setRename }) => {
   const element = getElement?.();
+  const [newName, setNewName] = useState();
+
 
   const handleDeleteConnections = () => {
     if (element) {
@@ -10,54 +13,68 @@ const BuildingDialog = ({ getElement, deleteConnections }) => {
     }
   };
 
+  const handleRename = () => {
+    if (element && newName?.trim()) {
+      setRename(element.id, newName.trim());
+      setNewName('');
+    }
+  };
+
   const truncatedLabel =
-  element?.data?.label?.length > 70
-    ? `${element.data.label.slice(0, 70)}...`
-    : element?.data?.label;
+    element?.data?.label?.length > 70
+      ? `${element.data.label.slice(0, 70)}...`
+      : element?.data?.label;
+
+   const [note, setNote] = useState(element?.note || '');
+
+  useEffect(() => {
+    if (element) {
+      setNote(element.note);
+    }
+  }, [element]); 
 
 
   return (
-    <div
-      className="dialog"
-      style={{
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        width: '90%',
-        margin: '0 auto',
-        textAlign: 'center',
-        maxWidth: '300px'
-      }}
-    >
+    <div className="dialog">
       {element ? (
-        <div>
-          <h2>Selected Node Info</h2>
-          <p
-          style={{ 
-            wordWrap: 'break-word',
-            overflowWrap: 'break-word',
-            maxWidth: '100%',
-            padding: '0 10px',}}
-          ><strong> {element.data.deviceType} {truncatedLabel}</strong></p>
-          <p><strong>Position:</strong> x: {Math.floor(element.position.x)}, y: {Math.floor(element.position.y)}</p>
-
-          <img
+        <div style={{color: '#fff', margin:'0px'}}>
+          <h2 style={{color: '#fff', margin:'0px'}}>Selected Node Info</h2>
+          <p style={{margin: "5px"}}>
+            <strong>{element.data.deviceType}: </strong>
+            {truncatedLabel}
+          </p>
+          <div style={{width: 'auto', height: '50px', paddingBottom: '2px'}}>
+            <img
             src={element.data.src}
             alt={element.data.label}
-            style={{ width: '20%', height: 'auto', margin: '5px 0', overflow: 'hidden'}}
+            style={{height:'100%', overflow: 'hidden'}}
+          />
+          </div>
+          <NodeNoteBox
+            nodeId={element.id}
+            note={note} 
+            updateNodeNote={updateNodeNote}
           />
 
-          <div style={{ display: 'flex', justifyContent: 'center', paddingBottom: '5px' }}>
+            <input
+              type="text"
+              value={newName || ''}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="Enter new name"
+              style={{ marginBottom: '5px', width: '85%', borderRadius: '5px', border: 'none',padding: "5px" }}
+            />
+            <div style={{ display: 'flex', justifyContent:'space-around', paddingTop: '5px',}}>
+            <button  style={{width:'30%' }}onClick={handleRename}>
+              Rename
+            </button>
+         
             <button
               onClick={handleDeleteConnections}
               style={{
-                marginTop: '5px',
-                padding: '3px 6px',
-                borderRadius: '6px',
+                paddingBottom: '5px', 
                 backgroundColor: '#ff4d4f',
-                color: '#fff',
                 border: 'none',
-                cursor: 'pointer',
-
+                width:'30%' 
               }}
             >
               Delete Connections
@@ -70,5 +87,6 @@ const BuildingDialog = ({ getElement, deleteConnections }) => {
     </div>
   );
 };
+
 
 export default BuildingDialog;
