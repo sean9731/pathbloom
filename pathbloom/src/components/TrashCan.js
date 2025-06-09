@@ -16,11 +16,7 @@ const TrashCan = ({ onDrop }) => {
   const handleDrop = (e) => {
     e.preventDefault();
     const nodeId = e.dataTransfer.getData('nodeId');
-    if(!nodeId){
-        return
-    }
-
-    onDrop(nodeId);
+    if (nodeId) onDrop(nodeId);
     setIsHovering(false);
   };
 
@@ -49,8 +45,9 @@ const TrashCan = ({ onDrop }) => {
           : '0 0 10px rgba(0,0,0,0.2)',
         transform: isHovering ? 'scale(1.1)' : 'scale(1)',
         transition: 'all 0.2s ease-in-out',
-        zIndex: 10,
+        zIndex: 100,
         cursor: 'pointer',
+
       }}
     >
       🗑️

@@ -23,7 +23,9 @@ const ExportButtons = ({ containerRef }) => {
         useCORS: true,
       ignoreElements: (element) => {
         const shouldIgnore =
-          element.classList?.contains('trash-can') || element.tagName === 'BUTTON';
+        element.classList?.contains('trash-can') ||
+        element.classList?.contains('delete-box') ||
+        element.tagName === 'BUTTON';
 
         if (shouldIgnore) {
           console.log('Ignoring element in JPG export:', element);
@@ -59,7 +61,7 @@ const exportToPDF = () => {
       scale: 2,
       ignoreElements: (element) => {
         const shouldIgnore =
-          element.classList?.contains('trash-can') || element.tagName === 'BUTTON' ||
+          element.classList?.contains('trash-can') || element.classList?.contains('delete-box') || element.tagName === 'BUTTON' ||
           element.closest('.trash-can') || 
           element === container.querySelector('.trash-can');
   

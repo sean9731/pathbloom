@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-const BoxComponent = ({ id, position, size, onDrag, onResize, style }) => {
+const BoxComponent = ({ id, position, size, onDrag, onResize, style, deleteBox }) => {
     const [dragging, setDragging] = useState(false);
     const [resizing, setResizing] = useState(false);
     const [dragStart, setDragStart] = useState({ mouseX: 0, mouseY: 0, boxX: 0, boxY: 0 });
@@ -49,6 +49,8 @@ const BoxComponent = ({ id, position, size, onDrag, onResize, style }) => {
       setResizing(false);
     };
   
+
+
     useEffect(() => {
       if (dragging || resizing) {
         window.addEventListener('mousemove', handleMouseMove);
@@ -79,6 +81,25 @@ const BoxComponent = ({ id, position, size, onDrag, onResize, style }) => {
         }}
         onMouseDown={handleMouseDown}
       >
+        
+      <div 
+        className='delete-box'
+        onClick={() => deleteBox(id)}
+        style={{
+          
+          width: '20px',
+          height: '20px',
+          backgroundColor: 'rgba(248, 5, 5, 0.6)',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          zIndex: 100,
+          borderBottomRightRadius: '4px',
+          cursor:'pointer'
+        }}>
+          
+          x
+      </div>
         {/* Resize handle */}
         <div
           style={{
@@ -98,3 +119,4 @@ const BoxComponent = ({ id, position, size, onDrag, onResize, style }) => {
   
 
 export default BoxComponent;
+

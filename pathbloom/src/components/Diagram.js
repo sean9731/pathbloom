@@ -56,7 +56,7 @@ const Diagram = ({
     setBoxes((prev) => [
       ...prev,
       {
-        id: Date.now(),
+        id: Date.now().toString(),
         position: { x: 100, y: 100 },
         size: { width: 100, height: 100 },
       },
@@ -81,16 +81,14 @@ const Diagram = ({
 
   const deleteBox = (id) => {
     setBoxes((prev) => prev.filter((box) => box.id !== id));
-  };
+  }
 
   const handleDropOnTrash = (id) => {
     const isNode = elements.nodes.some((node) => node.id === id);
-    const isBox = boxes.some((box) => box.id === id);
+  
 
     if (isNode) {
       deleteNode(id);
-    } else if (isBox) {
-      deleteBox(id);
     }
   };
 
@@ -260,6 +258,7 @@ const Diagram = ({
           size={box.size}
           onDrag={updateBoxPosition}
           onResize={updateBoxSize}
+          deleteBox={deleteBox}
           style={{
             position: 'absolute',
             zIndex: 1,
