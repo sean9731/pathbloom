@@ -96,7 +96,7 @@ const Diagram = ({
 
   const normalizeEdges = (edges) => {
     return edges.map(edge => {
-      const validTypes = ['solid', 'dotted', 'red'];
+      const validTypes = ['solid', 'dotted', 'lime'];
       let type = edge.type;
 
       if (!validTypes.includes(type)) {
@@ -120,9 +120,9 @@ const Diagram = ({
         newType = 'dotted';
         break;
       case 'dotted':
-        newType = 'red';
+        newType = 'lime';
         break;
-      case 'red':
+      case 'lime':
       default:
         newType = 'solid';
         break;
@@ -180,7 +180,7 @@ const Diagram = ({
         <strong>Lines:</strong> <br />
         Solid = Wired Connection <br />
         Dotted = Wireless Connection <br />
-        Red Dotted = Electrical Connection
+        Green Dotted = Electrical Connection
         <br />
         <br />
         {elements.edges.length > 0 && (

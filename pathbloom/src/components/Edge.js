@@ -28,7 +28,7 @@ const Edge = ({ source, target, isPingActive, type, toggleConnectionType }) => {
   const x = source.x + (target.x - source.x) * pingProgress;
   const y = source.y + (target.y - source.y) * pingProgress;
 
-  const strokeColor = type === 'red' ? '#cf0101' : 'white';
+  const strokeColor = type === 'lime' ? 'lime' : 'white';
   const strokeDasharray = type === 'solid' ? '0' : '5,5';
 
   return (
