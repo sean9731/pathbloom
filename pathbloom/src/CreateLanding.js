@@ -154,46 +154,50 @@ const CreateLanding = () => {
     }
   };
 
-  const uploadDiagram = (event) => {
-    const file = event.target.files[0];
-    if (file && file.type === 'application/json') {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const diagramData = JSON.parse(reader.result);
+const uploadDiagram = (event) => {
+  const file = event.target.files[0];
+  if (file && file.type === 'application/json') {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const diagramData = JSON.parse(reader.result);
+      console.log('Uploaded nodes:', diagramData.nodes);
 
-        const internetNodeFromUpload = diagramData.nodes.find(
-          (node) => node.id === 'internet-node'
-        );
+      const internetNodeFromUpload = diagramData.nodes.find(
+        (node) => node.id === 'internet-node'
+      );
 
-        const otherNodes = diagramData.nodes.filter(
-          (node) => node.id !== 'internet-node'
-        );
+      const otherNodes = diagramData.nodes.filter(
+        (node) => node.id !== 'internet-node'
+      );
 
-        const finalNodes = internetNodeFromUpload
-          ? [internetNodeFromUpload, ...otherNodes]
-          : [
-              {
-                id: 'internet-node',
-                data: {
-                  label: 'Internet',
-                  src: './icons/internet.png',
-                },
-                note: '',
-                position: { x: 50, y: 50 },
-              },
-              ...otherNodes,
-            ];
+      const internetNode = internetNodeFromUpload
+        ? {
+            ...internetNodeFromUpload,
+            position: internetNodeFromUpload.position || { x: 50, y: 50 },
+          }
+        : {
+            id: 'internet-node',
+            data: {
+              label: 'Internet',
+              src: './icons/internet.png',
+            },
+            note: '',
+            position: { x: 50, y: 50 },
+          };
 
-        setElements({
-          nodes: finalNodes,
-          edges: diagramData.edges,
-        });
-      };
-      reader.readAsText(file);
-    } else {
-      alert('Please upload a valid diagram JSON file.');
-    }
-  };
+      setElements({
+        nodes: [internetNode, ...otherNodes],
+        edges: diagramData.edges,
+        note: diagramData.note || '',
+      });
+      
+
+    };
+    reader.readAsText(file);
+  } else {
+    alert('Please upload a valid diagram JSON file.');
+  }
+};
 
 const setRename = (nodeId, newLabel) => {
   setElements((prev) => ({

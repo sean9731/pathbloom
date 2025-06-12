@@ -12,7 +12,7 @@ const NodeComponent = ({
   src,
   isSelected,
 }) => {
-  const [nodePosition, setNodePosition] = useState(position);
+  //const [nodePosition, setNodePosition] = useState(position);
 
   const handleDragStart = (e) => {
     e.dataTransfer.setData('nodeId', id); // Attach the node ID
@@ -35,7 +35,6 @@ const NodeComponent = ({
     newX = Math.max(0, Math.min(newX, container.offsetWidth - nodeWidth));
     newY = Math.max(0, Math.min(newY, container.offsetHeight - nodeHeight));
 
-    setNodePosition({ x: newX, y: newY });
     onDragEnd(id, { x: newX, y: newY });
   };
 
@@ -47,8 +46,8 @@ const NodeComponent = ({
       id={id}
       style={{
         position: 'absolute',
-        top: `${nodePosition.y}px`,
-        left: `${nodePosition.x}px`,
+        top: `${position.y}px`,
+        left: `${position.x}px`,
         width: '80px',         
         height: '50px',
         cursor: 'move',
